@@ -10,6 +10,8 @@ app.use(cors());
 const user_controller = require('./controllers/user.controller');
 const task_controller = require('./controllers/task.controller');
 
+app.set('port', process.env.PORT || 3000);
+
 app.get('/', (req, res) => {
     res.send('Hello!');
 });
@@ -64,6 +66,6 @@ app.post('/updateTask', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log(`App is listening on port 3000.`);
+app.listen(app.get('port'), () => {
+    console.log(`App is listening on port ${ app.get('port') }`);
 });
