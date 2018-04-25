@@ -28,35 +28,59 @@ const getUser = (data, callback) => {
         }, null);
 }
 
-const insertUser = (data, callback) => {
-    getUser(data, (err, result) => {
-        if (err) callback(err, null);
-        else {
-            if (result != null)
+const authUser = (data, callback) => {
+    if (data.email != null && data.password != null) {
+        database.find({
+            selector: {
+                "email": data.email,
+                "password": data.password
+            },
+            fields: []
+        }, function (err, result) {
+            if (err)
                 callback({
-                    status_code: 409,
-                    msg: 'USER_ALREADY_EXISTS'
+                    status_code: 500,
+                    msg: 'INTERNAL_SERVER_ERROR'
                 }, null);
+            else callback(null, result.docs[0]);
+        });
+    } else
+        callback({
+            status_code: 400,
+            msg: "BAD_REQUEST"
+        }, null);
+}
+
+const insertUser = (data, callback) => {
+    if (data.name != null && data.email != null) {
+        getUser(data, (err, result) => {
+            if (err) callback(err, null);
             else {
-                if (data.nome != null && data.password != null && data.email != null) {
-                    database.insert(data, (err, result) => {
+                if (result != null) 
+                    callback(null, result);
+                else {
+                    database.insert(data, (err, result2) => {
                         if (err) callback({
                             status_code: 500,
                             msg: "INTERNAL_SERVER_ERROR"
                         }, null);
-                        else callback(null, data);
+                        else {
+                            data._id = result2.id;
+                            callback(null, data);
+                        }
                     });
-                } else
-                    callback({
-                        status_code: 400,
-                        msg: "BAD_REQUEST"
-                    }, null);
+                }
             }
-        }
-    });
+        });
+    } else
+        callback({
+            status_code: 400,
+            msg: "BAD_REQUEST"
+        }, null);
 }
 
 module.exports = {
     getUser,
+    authUser,
     insertUser
 }

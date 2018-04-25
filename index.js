@@ -16,6 +16,16 @@ app.get('/', (req, res) => {
     res.send('Hello!');
 });
 
+app.post('/login', (req,res) => {
+    const data = req.body;
+    user_controller.authUser(data, (err, result) => {
+        if (err)
+            res.status(err.status_code).json(err);
+        else
+            res.status(200).json(result);
+    });
+});
+
 app.post('/addUser', (req, res) => {
     const data = req.body;
     user_controller.insertUser(data, (err, result) => {
