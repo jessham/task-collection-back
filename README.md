@@ -1,4 +1,4 @@
-# Task Collection
+# Task Collection Back-End
 
 Back-end of a checklist application that enables user's to create, manage and search your tasks.
 All users and tasks are stored in a No-SQL database.
@@ -19,9 +19,9 @@ This is a Node.js project. Before installing the project, download and install t
 
 ```
 # clone the repository locally
-git clone https://github.com/jessham/task-collection.git
+git clone https://github.com/jessham/task-collection-back.git
 # change the directory
-cd task-collection
+cd task-collection-back
 ```
 
 ### Configure .env file
